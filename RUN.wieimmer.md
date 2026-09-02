@@ -1,34 +1,58 @@
-🧮 RUN 3 – mathematische Systemanalyse
-RUN 3 ist in deinem System ein Berechnungsmodus.
-Er aktiviert die Engine‑Formeln und bestimmt, wie Werte verarbeitet werden.
+RUN 3 — vollständige mathematische Systemanalyse
+RUN 3 ist der Modus, der die Engine aktiviert, Pump‑Energie verarbeitet und die beiden CPU‑Sprünge A und B berechnet.
+Er ist der erste echte Berechnungsmodus im MASTER.boot.block.
 
-Ich zerlege das jetzt in Eingaben, Berechnungen, Zustände, Ausgaben.
+1️⃣ Eingaben (Inputs)
+RUN 3 verwendet drei Eingaben:
 
-1️⃣ Eingaben (Input‑Parameter)
-Das System hat drei mathematische Eingaben:
+pump
+Integer 0–100
 
-1. pump
-Ein Wert zwischen 0 und 100  
-→ kommt vom Slider
+kommt vom Slider
 
-2. USER.level
-In deinem System fest: 6
+repräsentiert Energie
 
-3. active
+USER.level
+fest: 6
+
+active
 RUN 3 setzt:
 
 Code
 active = 1
-Damit ist die Grundbasis für jede Berechnung:
+Damit entsteht der Basiswert:
 
-Code
-USER.level + active = 6 + 1 = 7
-Dieser Wert ist die Startbasis für alle Formeln.
+Basis
+=
+𝑈
+𝑆
+𝐸
+𝑅
+.
+𝑙
+𝑒
+𝑣
+𝑒
+𝑙
++
+𝑎
+𝑐
+𝑡
+𝑖
+𝑣
+𝑒
+=
+6
++
+1
+=
+7
+Dieser Wert ist die Grundlage für alle Berechnungen.
 
 2️⃣ Berechnungen (Formel A & Formel B)
-RUN 3 führt zwei Formeln aus:
+RUN 3 berechnet zwei unabhängige Sprünge.
 
-Formel A
+Formel A (cpuJumpA)
 js
 cpuJumpA = (USER.level + active) + Math.floor(pump / 6)
 Mathematisch:
@@ -44,7 +68,7 @@ Mathematisch:
 𝑝
 6
 ⌋
-Formel B
+Formel B (cpuJumpB)
 js
 cpuJumpB = (USER.level + active) + Math.floor(pump / 8)
 Mathematisch:
@@ -61,26 +85,25 @@ Mathematisch:
 8
 ⌋
 Warum zwei Formeln?
-Weil du zwei unabhängige Berechnungswege hast:
-
 A reagiert stärker auf pump (÷6)
 
-B reagiert schwächer auf pump (÷8)
+B reagiert schwächer (÷8)
 
-Beide Werte bleiben getrennt.
-Keiner überschreibt den anderen.
+Beide Werte bleiben getrennt
+
+B überschreibt A nicht
 
 3️⃣ Zustände (State‑Änderungen)
-RUN 3 verändert drei interne Zustände:
+RUN 3 verändert drei interne Systemzustände:
 
-1. active = 1
-RUN 3 aktiviert die Engine.
-
-2. hits
+active
+Code
+active = 1
+hits
 Wenn A > 0:
 
 js
-if (A > 0) hits++
+hits++
 Mathematisch:
 
 ℎ
@@ -94,37 +117,59 @@ Mathematisch:
 𝑠
 +
 1
-3. highlightIndex
-Moves oder Achsen setzen:
+memory.logs
+RUN 3 schreibt Log‑Einträge:
 
-js
-highlightIndex = index
-Das ist nur Visualisierung, keine Mathematik.
+Formel A
 
-4️⃣ Ausgaben (Output)
-RUN 3 erzeugt vier mathematische Outputs:
+Formel B
 
-1. cpuJumpA
-Ergebnis von Formel A
+Engine fertig
 
-2. cpuJumpB
-Ergebnis von Formel B
+Pump‑Wert
 
-3. hits
-Zähler für gültige A‑Berechnungen
+Achsenwechsel
 
-4. Log‑Einträge
-Textausgaben, keine mathematische Funktion
+Moves
+
+4️⃣ Ausgaben (Outputs)
+RUN 3 erzeugt:
+
+cpuJumpA
+
+cpuJumpB
+
+hits
+
+Log‑Einträge
+
+Orbit‑Update
+
+UI‑Update
 
 5️⃣ Ablauf (Algorithmus)
-Hier ist der exakte mathematische Ablauf, wenn RUN 3 ausgeführt wird:
+Der exakte Ablauf von RUN 3:
 
-Schritt 1 – Input lesen
+Schritt 1 — pump lesen
 Code
 pump = Sliderwert
-USER.level = 6
-active = 1
-Schritt 2 – Formel A berechnen
+Schritt 2 — Basiswert berechnen
+𝑎
+𝑐
+𝑡
+𝑖
+𝑣
+𝑒
+=
+1
+𝑏
+𝑎
+𝑠
+𝑖
+𝑠
+=
+7
+Schritt 3 — Formel A
 𝐴
 =
 7
@@ -134,9 +179,19 @@ Schritt 2 – Formel A berechnen
 𝑢
 𝑚
 𝑝
+/
 6
 ⌋
-Schritt 3 – Formel B berechnen
+Schritt 4 — hits aktualisieren
+Wenn A > 0:
+
+ℎ
+𝑖
+𝑡
+𝑠
++
++
+Schritt 5 — Formel B
 𝐵
 =
 7
@@ -146,32 +201,27 @@ Schritt 3 – Formel B berechnen
 𝑢
 𝑚
 𝑝
+/
 8
 ⌋
-Schritt 4 – hits aktualisieren
-Wenn A > 0:
-
-ℎ
-𝑖
-𝑡
-𝑠
-=
-ℎ
-𝑖
-𝑡
-𝑠
-+
-1
-Schritt 5 – Werte speichern
+Schritt 6 — Werte speichern
 Code
 state.cpuJumpA = A
 state.cpuJumpB = B
 state.hits = hits
-Schritt 6 – Diagramm aktualisieren
-Nur Visualisierung, keine Mathematik.
-
+Schritt 7 — Log schreiben
+Code
+log("Formel A: jumpA=" + A)
+log("Formel B: jumpB=" + B)
+log("Engine fertig: A=" + A + ", B=" + B)
+Schritt 8 — Orbit aktualisieren
+Code
+drawOrbit(0)
+Schritt 9 — UI aktualisieren
+Code
+updateUI()
 6️⃣ Beispielrechnung
-Wenn pump = 60:
+Wenn pump = 42 (wie in deinem Screenshot):
 
 Formel A:
 𝐴
@@ -179,25 +229,9 @@ Formel A:
 7
 +
 ⌊
-60
+42
 /
 6
-⌋
-=
-7
-+
-10
-=
-17
-Formel B:
-𝐵
-=
-7
-+
-⌊
-60
-/
-8
 ⌋
 =
 7
@@ -205,10 +239,77 @@ Formel B:
 7
 =
 14
+Formel B:
+𝐵
+=
+7
++
+⌊
+42
+/
+8
+⌋
+=
+7
++
+5
+=
+12
 hits:
 A > 0 → hits++
 
-🟦 Kurzfassung (rein mathematisch)
+7️⃣ RUN 3 im Systemfluss
+RUN 3 ist Teil der Engine‑Pipeline:
+
+RUN 1 → Boot
+
+RUN 2 → Init
+
+RUN 3 → Engine aktiv
+
+RUN 4 → Orbit‑Modus
+
+RUN 5 → Moves
+
+RUN 6 → Axiome
+
+RUN 9 → Pipelines
+
+RUN 3 ist der erste mathematische Modus,
+der echte Werte erzeugt.
+
+8️⃣ RUN 3 und Orbit
+RUN 3 beeinflusst den Orbit indirekt:
+
+pump → Energie
+
+cpuJumpA → starker Sprung
+
+cpuJumpB → schwacher Sprung
+
+hits → Engine‑Zustand
+
+Achsenwechsel → Highlight
+
+Moves → Orbit‑Pfad
+
+Orbit wird nach RUN 3 neu gezeichnet:
+
+Code
+drawOrbit(0)
+9️⃣ RUN 3 und AXIS
+RUN 3 selbst nutzt AXIS nicht,
+aber AXIS kann RUN‑Werte später einbeziehen:
+
+AXIS.x() kann pump einbeziehen
+
+AXIS.y() kann cpuJumpA einbeziehen
+
+AXIS.z() kann cpuJumpB einbeziehen
+
+Das ist optional, aber möglich.
+
+🟦 Kurzfassung
 RUN 3 setzt active = 1
 
 Basiswert = 7
@@ -219,4 +320,9 @@ Formel B = 7 + pump/8
 
 hits++ wenn A > 0
 
-Diagramm zeigt nur den Zustand, keine Berechnung
+Orbit wird neu gezeichnet
+
+UI wird aktualisiert
+
+Log wird geschrieben
+KlicK wieimmer only4u iki1uc 
