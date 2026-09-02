@@ -1,5 +1,3 @@
-AXIS.x()
-
-AXIS.y()
-
-AXIS.z()
+cx = 250 + Math.sin(t) * AXIS.x();
+cy = 250 + Math.cos(t) * AXIS.y();
+radius = AXIS.z() * 0.3 + 10;
